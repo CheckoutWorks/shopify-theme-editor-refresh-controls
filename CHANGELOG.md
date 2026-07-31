@@ -4,6 +4,14 @@ All notable public changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-08-01
+
+### Fixed
+
+- The discard control now follows Shopify's native Save state: it is visibly disabled in clean Theme Editor sessions and becomes available when unsaved changes exist.
+- Hovering the clean-state control shows a Shopify-style `There are no unsaved changes to discard.` tooltip instead of entering a transient error state.
+- The expected clean-session state no longer emits a console warning.
+
 ## [1.0.0] - 2026-07-31
 
 ### Initial Public Release

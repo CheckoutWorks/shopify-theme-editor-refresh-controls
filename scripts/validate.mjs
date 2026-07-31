@@ -43,7 +43,7 @@ for (const relativePath of requiredFiles) {
 const requiredMetadata = [
   "// @name         Shopify Theme Editor Refresh Controls",
   "// @namespace    https://checkoutworks.dev/",
-  "// @version      1.0.0",
+  "// @version      1.0.1",
   "// @author       CheckoutWorks",
   "// @homepageURL  https://checkoutworks.dev/",
   "// @supportURL   https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/issues",
@@ -65,6 +65,10 @@ const requiredBehaviorMarkers = [
   "normalizeActionContent",
   "checkoutworks-theme-refresh-tooltip",
   "Discard all unsaved changes and refresh the theme editor?",
+  "There are no unsaved changes to discard.",
+  "showNoUnsavedChangesNotice",
+  "nativeSaveStateObserver",
+  "s-internal-button[variant=\"primary\"]:not([icon])",
   "not affiliated with, endorsed by, or supported by Shopify Inc.",
 ];
 
@@ -100,5 +104,5 @@ if (errors.length > 0) {
   }
   process.exitCode = 1;
 } else {
-  console.log("Validated Shopify Theme Editor Refresh Controls v1.0.0.");
+  console.log("Validated Shopify Theme Editor Refresh Controls v1.0.1.");
 }

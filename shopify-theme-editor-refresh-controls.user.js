@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopify Theme Editor Refresh Controls
 // @namespace    https://checkoutworks.dev/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Refresh the storefront preview or discard unsaved edits without reloading the full Shopify Admin page.
 // @author       CheckoutWorks
 // @homepageURL  https://checkoutworks.dev/
@@ -79,6 +79,8 @@
   const RESET_LABEL = "Discard and refresh the theme editor";
   const RESET_CONFIRMATION_MESSAGE =
     "Discard all unsaved changes and refresh the theme editor?\n\nYour unsaved changes will be lost.";
+  const NO_UNSAVED_CHANGES_MESSAGE =
+    "There are no unsaved changes to discard.";
   const REACT_FIBER_PROPERTY_PREFIXES = [
     "__reactFiber$",
     "__reactInternalInstance$",
@@ -90,6 +92,7 @@
   const MAX_REACT_FIBER_NODES = 100_000;
   const COOLDOWN_MS = 1_500;
   const ERROR_STATE_MS = 3_000;
+  const NOTICE_STATE_MS = 3_000;
   const TOOLTIP_SHOW_DELAY_MS = 250;
   const TOOLTIP_VIEWPORT_MARGIN_PX = 8;
   const TOOLTIP_BUTTON_GAP_PX = 12;
@@ -220,6 +223,10 @@
     let resetButton = null;
     let injectionAnimationFrame = null;
     let runtimeActive = false;
+    let nativeSaveButton = null;
+    let nativeSaveLookupComplete = false;
+    let nativeSaveStateObserver = null;
+    let editorHasUnsavedChanges = null;
 
     let previewState = {
       kind: "idle",
@@ -263,6 +270,11 @@
       runtimeActive = false;
       documentObserver?.disconnect();
       documentObserver = null;
+      nativeSaveStateObserver?.disconnect();
+      nativeSaveStateObserver = null;
+      nativeSaveButton = null;
+      nativeSaveLookupComplete = false;
+      editorHasUnsavedChanges = null;
       hideTooltip();
 
       if (injectionAnimationFrame !== null) {
@@ -331,7 +343,12 @@
         hideTooltip();
       }
 
-      if (getPreviewButton() && getResetButton()) {
+      if (
+        getPreviewButton() &&
+        getResetButton() &&
+        nativeSaveLookupComplete &&
+        (!nativeSaveButton || nativeSaveButton.isConnected)
+      ) {
         return;
       }
 
@@ -394,6 +411,11 @@
         #${RESET_BUTTON_ID}:disabled {
           cursor: progress;
           opacity: 0.65;
+        }
+
+        #${RESET_BUTTON_ID}[data-disabled-reason="clean"] {
+          cursor: default;
+          opacity: 0.35;
         }
 
         #${TOOLTIP_ID} {
@@ -540,6 +562,49 @@
       );
 
       sidekickWrapper.before(previewWrapper, resetWrapper);
+      synchronizeNativeSaveState();
+      applyAllToolbarStates();
+    }
+
+    function synchronizeNativeSaveState() {
+      const candidates = document.querySelectorAll(
+        'header s-internal-button[variant="primary"]:not([icon])',
+      );
+      const nextSaveButton =
+        candidates.length === 1 && candidates[0] instanceof HTMLElement
+          ? candidates[0]
+          : null;
+      nativeSaveLookupComplete = true;
+
+      if (nextSaveButton !== nativeSaveButton) {
+        nativeSaveStateObserver?.disconnect();
+        nativeSaveStateObserver = null;
+        nativeSaveButton = nextSaveButton;
+
+        if (nativeSaveButton) {
+          nativeSaveStateObserver = new MutationObserver(() => {
+            updateEditorUnsavedState();
+          });
+          nativeSaveStateObserver.observe(nativeSaveButton, {
+            attributeFilter: ["disabled"],
+            attributes: true,
+          });
+        }
+      }
+
+      updateEditorUnsavedState();
+    }
+
+    function updateEditorUnsavedState() {
+      const nextState = nativeSaveButton?.isConnected
+        ? !nativeSaveButton.hasAttribute("disabled")
+        : null;
+
+      if (nextState === editorHasUnsavedChanges) {
+        return;
+      }
+
+      editorHasUnsavedChanges = nextState;
       applyAllToolbarStates();
     }
 
@@ -945,7 +1010,7 @@
      * already-localized action content. Duplicate Fiber wrappers are collapsed
      * by callback identity. Any missing or ambiguous signal fails closed.
      *
-     * @returns {{onAction: Function}|{error: string}}
+     * @returns {{onAction: Function}|{error: string, reason?: string}}
      */
     function inspectHiddenNativeRefreshAction() {
       const root = getCurrentReactFiberRoot();
@@ -1088,6 +1153,7 @@
       ) {
         return {
           error: "Shopify's native refresh action is currently disabled",
+          reason: "no-unsaved-changes",
         };
       }
 
@@ -1120,6 +1186,11 @@
 
       const nativeRefreshAction = inspectHiddenNativeRefreshAction();
       if (!nativeRefreshAction.onAction) {
+        if (nativeRefreshAction.reason === "no-unsaved-changes") {
+          showNoUnsavedChangesNotice();
+          return;
+        }
+
         showEditorResetError(nativeRefreshAction.error);
         return;
       }
@@ -1155,6 +1226,21 @@
           failEditorReset("Shopify's native refresh action was rejected");
         },
       );
+    }
+
+    function showNoUnsavedChangesNotice() {
+      const button = getResetButton();
+      if (!button) {
+        return;
+      }
+
+      transitionEditorResetState("idle", NO_UNSAVED_CHANGES_MESSAGE);
+      showTooltip(button);
+
+      editorResetStateTimer = window.setTimeout(() => {
+        hideTooltip();
+        transitionEditorResetState("idle", RESET_LABEL);
+      }, NOTICE_STATE_MS);
     }
 
     function completeEditorReset() {
@@ -1520,16 +1606,30 @@
     }
 
     function applyResetButtonState(button) {
-      const isDisabled =
+      const hasNoUnsavedChanges = editorHasUnsavedChanges === false;
+      const isBusy =
         editorResetActive ||
         activePreviewRefresh !== null ||
         previewState.kind === "cooldown" ||
         editorResetState.kind === "cooldown";
+      const isUnavailable = hasNoUnsavedChanges || isBusy;
+      const label = hasNoUnsavedChanges
+        ? NO_UNSAVED_CHANGES_MESSAGE
+        : editorResetState.label;
+
       button.dataset.refreshState = editorResetState.kind;
-      button.disabled = isDisabled;
-      button.setAttribute("aria-disabled", String(isDisabled));
-      button.setAttribute("aria-label", editorResetState.label);
-      button.dataset.tooltipLabel = editorResetState.label;
+      button.disabled = isBusy;
+      button.setAttribute("aria-disabled", String(isUnavailable));
+      button.setAttribute("aria-label", label);
+      button.dataset.tooltipLabel = label;
+
+      if (hasNoUnsavedChanges) {
+        button.dataset.disabledReason = "clean";
+      } else if (isBusy) {
+        button.dataset.disabledReason = "busy";
+      } else {
+        delete button.dataset.disabledReason;
+      }
     }
   }
 })();

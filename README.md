@@ -5,7 +5,7 @@ An unofficial, dependency-free userscript by CheckoutWorks that adds two focused
 - **Refresh storefront preview** reloads only the active storefront preview iframe and preserves unsaved editor settings.
 - **Discard and refresh the theme editor** invokes Shopify's currently mounted native refresh action after confirmation and discards unsaved editor changes.
 
-Version `1.0.0` is the Initial Public Release. The repository contains one canonical release userscript; earlier development, experimental, and diagnostic scripts are intentionally excluded.
+The current release is `1.0.1`. Version `1.0.0` was the Initial Public Release. The repository contains one canonical release userscript; earlier development, experimental, and diagnostic scripts are intentionally excluded.
 
 > [!WARNING]
 > **Discard and refresh the theme editor permanently removes all unsaved Theme Editor changes.** Read the browser confirmation carefully before continuing.
@@ -23,6 +23,8 @@ If the listener does not acknowledge the request, the script falls back to Shopi
 The discard control resolves the callback behind Shopify's mounted native refresh action through a language-independent structural matcher. It correlates the destructive action shape, callback identity, secondary conflict action, and modal state, then fails closed if the result is missing, ambiguous, inconsistent, already open, or disabled.
 
 The matcher does not depend on translated action labels. It has been inspected in English, Simplified Chinese, and Japanese Shopify Admin interfaces.
+
+If the Theme Editor has no unsaved changes, the discard control follows Shopify's native Save state and appears disabled. Its tooltip explains that there is nothing to discard, and it does not attempt to invoke Shopify's disabled native refresh action. A narrowly scoped observer watches only the native Save control's `disabled` attribute; if that structural signal is unavailable, the control fails open and retains its existing click-time safety checks.
 
 ### Native-style controls
 
@@ -42,6 +44,7 @@ For userscript community mirrors, install only a release whose source matches th
 
 ## Compatibility
 
+- Current release: `1.0.1` (2026-08-01).
 - Initial Public Release: `1.0.0` (2026-07-31).
 - Tested with Google Chrome and Tampermonkey.
 - The preview listener supports Shopify design-mode previews on `*.myshopify.com`.
