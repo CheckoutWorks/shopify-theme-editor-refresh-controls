@@ -1,0 +1,79 @@
+name: Bug report
+description: Report a reproducible problem with the canonical userscript
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not include credentials, cookies, signed Theme Editor URLs, customer data, or unredacted store information. Report security vulnerabilities privately according to SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Userscript version
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and userscript manager
+      placeholder: Chrome 140, Tampermonkey 5.x
+    validations:
+      required: true
+  - type: input
+    id: language
+    attributes:
+      label: Shopify Admin language
+      placeholder: English
+    validations:
+      required: true
+  - type: dropdown
+    id: control
+    attributes:
+      label: Affected control
+      options:
+        - Refresh storefront preview
+        - Discard and refresh the theme editor
+        - Toolbar or tooltip UI
+        - Installation or update
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Describe the smallest reliable sequence that triggers the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Redacted console output
+      description: Include relevant warnings prefixed with Shopify Theme Editor Refresh Controls.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I disabled older versions and reproduced the issue with only the canonical userscript enabled.
+          required: true
+        - label: I removed credentials, signed URLs, customer data, and private store information.
+          required: true
+        - label: This report is not a security vulnerability.
+          required: true

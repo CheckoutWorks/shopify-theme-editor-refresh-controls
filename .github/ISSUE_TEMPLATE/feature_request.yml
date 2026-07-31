@@ -1,0 +1,39 @@
+name: Feature request
+description: Suggest a focused improvement to the userscript
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Proposals must preserve the project's dependency-free, privacy-preserving, fail-closed design and explicit confirmation for destructive actions.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What Theme Editor workflow problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Describe the user-visible behavior and safety constraints.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: Project constraints
+      options:
+        - label: The proposal does not require analytics, telemetry, tracking, or persistent data collection.
+          required: true
+        - label: The proposal does not require an external runtime dependency or remotely loaded code.
+          required: true
+        - label: The proposal preserves confirmation for destructive actions.
+          required: true
