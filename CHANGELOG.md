@@ -4,6 +4,17 @@ All notable public changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-08-01
+
+### Added
+
+- Added explicit GitHub source, update, and download metadata so direct GitHub installations have a stable update channel.
+
+### Fixed
+
+- Added bounded retries when Shopify's native Save control is not yet mounted during initial toolbar injection.
+- Disabled loading-icon rotation when the operating system requests reduced motion.
+
 ## [1.0.1] - 2026-08-01
 
 ### Fixed

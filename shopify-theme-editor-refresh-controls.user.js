@@ -1,11 +1,14 @@
 // ==UserScript==
 // @name         Shopify Theme Editor Refresh Controls
 // @namespace    https://checkoutworks.dev/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Refresh the storefront preview or discard unsaved edits without reloading the full Shopify Admin page.
 // @author       CheckoutWorks
 // @homepageURL  https://checkoutworks.dev/
+// @source       https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls
 // @supportURL   https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/issues
+// @updateURL    https://raw.githubusercontent.com/CheckoutWorks/shopify-theme-editor-refresh-controls/main/shopify-theme-editor-refresh-controls.user.js
+// @downloadURL  https://raw.githubusercontent.com/CheckoutWorks/shopify-theme-editor-refresh-controls/main/shopify-theme-editor-refresh-controls.user.js
 // @license      MIT
 // @match        https://online-store-web.shopifyapps.com/themes*
 // @match        https://*.myshopify.com/*
@@ -90,6 +93,8 @@
   const PREVIEW_REFRESH_TIMEOUT_MS = 20_000;
   const EDITOR_RESET_WATCHDOG_MS = 20_000;
   const MAX_REACT_FIBER_NODES = 100_000;
+  const MAX_NATIVE_SAVE_RETRY_ATTEMPTS = 3;
+  const NATIVE_SAVE_RETRY_DELAY_MS = 250;
   const COOLDOWN_MS = 1_500;
   const ERROR_STATE_MS = 3_000;
   const NOTICE_STATE_MS = 3_000;
@@ -225,6 +230,8 @@
     let runtimeActive = false;
     let nativeSaveButton = null;
     let nativeSaveLookupComplete = false;
+    let nativeSaveRetryAttempts = 0;
+    let nativeSaveRetryTimer = null;
     let nativeSaveStateObserver = null;
     let editorHasUnsavedChanges = null;
 
@@ -274,6 +281,7 @@
       nativeSaveStateObserver = null;
       nativeSaveButton = null;
       nativeSaveLookupComplete = false;
+      nativeSaveRetryAttempts = 0;
       editorHasUnsavedChanges = null;
       hideTooltip();
 
@@ -285,9 +293,11 @@
       window.clearTimeout(previewStateTimer);
       window.clearTimeout(editorResetTimer);
       window.clearTimeout(editorResetStateTimer);
+      window.clearTimeout(nativeSaveRetryTimer);
       previewStateTimer = null;
       editorResetTimer = null;
       editorResetStateTimer = null;
+      nativeSaveRetryTimer = null;
 
       if (activePreviewRefresh) {
         cleanUpPreviewRefresh(activePreviewRefresh);
@@ -490,7 +500,7 @@
 
           #${PREVIEW_BUTTON_ID}[data-refresh-state="loading"] svg,
           #${RESET_BUTTON_ID}[data-refresh-state="loading"] svg {
-            animation-duration: 1.6s;
+            animation: none;
           }
         }
 
@@ -593,6 +603,35 @@
       }
 
       updateEditorUnsavedState();
+
+      if (nativeSaveButton) {
+        window.clearTimeout(nativeSaveRetryTimer);
+        nativeSaveRetryTimer = null;
+        nativeSaveRetryAttempts = 0;
+      } else {
+        scheduleNativeSaveRetry();
+      }
+    }
+
+    function scheduleNativeSaveRetry() {
+      if (
+        nativeSaveRetryTimer !== null ||
+        nativeSaveRetryAttempts >= MAX_NATIVE_SAVE_RETRY_ATTEMPTS
+      ) {
+        return;
+      }
+
+      nativeSaveRetryAttempts += 1;
+      nativeSaveRetryTimer = window.setTimeout(() => {
+        nativeSaveRetryTimer = null;
+
+        if (!runtimeActive || !isEditorRoute()) {
+          nativeSaveRetryAttempts = 0;
+          return;
+        }
+
+        synchronizeNativeSaveState();
+      }, NATIVE_SAVE_RETRY_DELAY_MS * nativeSaveRetryAttempts);
     }
 
     function updateEditorUnsavedState() {

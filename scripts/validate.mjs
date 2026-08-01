@@ -43,10 +43,13 @@ for (const relativePath of requiredFiles) {
 const requiredMetadata = [
   "// @name         Shopify Theme Editor Refresh Controls",
   "// @namespace    https://checkoutworks.dev/",
-  "// @version      1.0.1",
+  "// @version      1.0.2",
   "// @author       CheckoutWorks",
   "// @homepageURL  https://checkoutworks.dev/",
+  "// @source       https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls",
   "// @supportURL   https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/issues",
+  "// @updateURL    https://raw.githubusercontent.com/CheckoutWorks/shopify-theme-editor-refresh-controls/main/shopify-theme-editor-refresh-controls.user.js",
+  "// @downloadURL  https://raw.githubusercontent.com/CheckoutWorks/shopify-theme-editor-refresh-controls/main/shopify-theme-editor-refresh-controls.user.js",
   "// @license      MIT",
   "// @match        https://online-store-web.shopifyapps.com/themes*",
   "// @match        https://*.myshopify.com/*",
@@ -68,6 +71,8 @@ const requiredBehaviorMarkers = [
   "There are no unsaved changes to discard.",
   "showNoUnsavedChangesNotice",
   "nativeSaveStateObserver",
+  "scheduleNativeSaveRetry",
+  "MAX_NATIVE_SAVE_RETRY_ATTEMPTS",
   "s-internal-button[variant=\"primary\"]:not([icon])",
   "not affiliated with, endorsed by, or supported by Shopify Inc.",
 ];
@@ -104,5 +109,5 @@ if (errors.length > 0) {
   }
   process.exitCode = 1;
 } else {
-  console.log("Validated Shopify Theme Editor Refresh Controls v1.0.1.");
+  console.log("Validated Shopify Theme Editor Refresh Controls v1.0.2.");
 }

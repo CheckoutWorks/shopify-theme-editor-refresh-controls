@@ -43,6 +43,7 @@ The controls appear to the left of Sidekick. Disable older development versions 
 - No analytics, telemetry, tracking, persistent storage, or external runtime dependencies.
 - Does not send shop data to CheckoutWorks or another third party.
 - Does not reconstruct Shopify HMAC parameters or signed editor URLs.
+- The `*.myshopify.com` match runs only inside Shopify design-mode preview iframes; ordinary storefront tabs exit immediately.
 - Tested with Google Chrome and Tampermonkey, including English, Simplified Chinese, and Japanese Shopify Admin interfaces.
 - Discard refresh restores the last saved state, not the theme's factory defaults.
 - Shopify can change its private Theme Editor implementation without notice. If the native action cannot be resolved safely, the script stops and reports an error.
