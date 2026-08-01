@@ -7,9 +7,6 @@ An unofficial, dependency-free userscript by CheckoutWorks that adds two recover
 
 [Install userscript](https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/raw/main/shopify-theme-editor-refresh-controls.user.js)
 
-> [!WARNING]
-> **Discard and refresh the theme editor permanently removes all unsaved Theme Editor changes.**
-
 ## Demo
 
 ### Refresh storefront preview
@@ -21,6 +18,9 @@ Reload the storefront preview without reloading the full Shopify Admin page.
 ### Discard and refresh the theme editor
 
 Discard unsaved customizations and return to Shopify's last saved editor state.
+
+> [!WARNING]
+> **Discard and refresh the theme editor permanently removes all unsaved Theme Editor changes.**
 
 ![Discard and refresh the theme editor](./assets/discard-and-refresh-theme-editor.gif)
 
