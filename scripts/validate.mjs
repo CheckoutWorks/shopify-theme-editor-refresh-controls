@@ -43,9 +43,9 @@ for (const relativePath of requiredFiles) {
 const requiredMetadata = [
   "// @name         Shopify Theme Editor Refresh Controls",
   "// @namespace    https://checkoutworks.dev/",
-  "// @version      1.0.2",
+  "// @version      1.0.3",
   "// @author       CheckoutWorks",
-  "// @homepageURL  https://checkoutworks.dev/",
+  "// @homepageURL  https://checkoutworks.dev/blogs/shopify-field-notes/refresh-shopify-theme-editor-without-reloading-admin",
   "// @source       https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls",
   "// @supportURL   https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/issues",
   "// @updateURL    https://raw.githubusercontent.com/CheckoutWorks/shopify-theme-editor-refresh-controls/main/shopify-theme-editor-refresh-controls.user.js",
@@ -109,5 +109,5 @@ if (errors.length > 0) {
   }
   process.exitCode = 1;
 } else {
-  console.log("Validated Shopify Theme Editor Refresh Controls v1.0.2.");
+  console.log("Validated Shopify Theme Editor Refresh Controls v1.0.3.");
 }

@@ -4,6 +4,12 @@ All notable public changes to this project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-08-01
+
+### Changed
+
+- Updated the userscript homepage and repository documentation to link to the project guide on CheckoutWorks.
+
 ## [1.0.2] - 2026-08-01
 
 ### Added

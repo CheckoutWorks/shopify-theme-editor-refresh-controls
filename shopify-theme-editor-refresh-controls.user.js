@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         Shopify Theme Editor Refresh Controls
 // @namespace    https://checkoutworks.dev/
-// @version      1.0.2
+// @version      1.0.3
 // @description  Refresh the storefront preview or discard unsaved edits without reloading the full Shopify Admin page.
 // @author       CheckoutWorks
-// @homepageURL  https://checkoutworks.dev/
+// @homepageURL  https://checkoutworks.dev/blogs/shopify-field-notes/refresh-shopify-theme-editor-without-reloading-admin
 // @source       https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls
 // @supportURL   https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/issues
 // @updateURL    https://raw.githubusercontent.com/CheckoutWorks/shopify-theme-editor-refresh-controls/main/shopify-theme-editor-refresh-controls.user.js
