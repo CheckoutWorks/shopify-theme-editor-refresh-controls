@@ -5,6 +5,10 @@ An unofficial, dependency-free userscript by CheckoutWorks that adds two focused
 - **Refresh storefront preview** reloads only the active storefront preview iframe and preserves unsaved editor settings.
 - **Discard and refresh the theme editor** invokes Shopify's currently mounted native refresh action after confirmation and discards unsaved editor changes.
 
+![Refresh storefront preview demo](./assets/refresh-storefront-preview.gif)
+
+![Discard and refresh the theme editor demo](./assets/discard-and-refresh-theme-editor.gif)
+
 The current release is `1.0.1`. Version `1.0.0` was the Initial Public Release. The repository contains one canonical release userscript; earlier development, experimental, and diagnostic scripts are intentionally excluded.
 
 > [!WARNING]
