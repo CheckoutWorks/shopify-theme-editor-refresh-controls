@@ -2,17 +2,28 @@
 
 An unofficial, dependency-free userscript by CheckoutWorks that adds two focused recovery controls to Shopify's Theme Editor:
 
-- **Refresh storefront preview** reloads only the active storefront preview iframe and preserves unsaved editor settings.
-- **Discard and refresh the theme editor** invokes Shopify's currently mounted native refresh action after confirmation and discards unsaved editor changes.
+[Install userscript](https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/raw/main/shopify-theme-editor-refresh-controls.user.js)
 
-![Refresh storefront preview demo](./assets/refresh-storefront-preview.gif)
+## Demo
 
-![Discard and refresh the theme editor demo](./assets/discard-and-refresh-theme-editor.gif)
+### Refresh storefront preview
+
+Reload only the storefront preview while keeping your unsaved Theme Editor changes.
+
+![Refresh storefront preview](./assets/refresh-storefront-preview.gif)
+
+### Discard and refresh the theme editor
+
+Discard all unsaved customizations and restore Shopify’s last saved Theme Editor state.
+
+> **Warning:** This permanently removes unsaved Theme Editor changes.
+
+![Discard and refresh the theme editor](./assets/discard-and-refresh-theme-editor.gif)
+
+
 
 The current release is `1.0.1`. Version `1.0.0` was the Initial Public Release. The repository contains one canonical release userscript; earlier development, experimental, and diagnostic scripts are intentionally excluded.
 
-> [!WARNING]
-> **Discard and refresh the theme editor permanently removes all unsaved Theme Editor changes.** Read the browser confirmation carefully before continuing.
 
 ## Features
 
