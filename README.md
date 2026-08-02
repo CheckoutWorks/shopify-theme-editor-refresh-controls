@@ -26,7 +26,7 @@ Discard unsaved customizations and return to Shopify's last saved editor state.
 
 ## Installation
 
-1. Install [Tampermonkey](https://www.tampermonkey.net/) in Google Chrome.
+1. Install [Tampermonkey](https://www.tampermonkey.net/) in Google Chrome, and [make sure userscripts are enabled](https://www.tampermonkey.net/faq.php?q=Q209).
 2. Select [Install userscript](https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/raw/main/shopify-theme-editor-refresh-controls.user.js) and confirm the Tampermonkey prompt.
 3. Open a Shopify theme through **Online Store → Themes → Customize**.
 
