@@ -1,6 +1,6 @@
 # Shopify Theme Editor Refresh Controls
 
-An unofficial, dependency-free userscript by CheckoutWorks that adds two recovery controls to Shopify's Theme Editor:
+An unofficial, dependency-free userscript by **[CheckoutWorks](https://checkoutworks.dev)** that adds two recovery controls to Shopify's Theme Editor:
 
 - **Refresh storefront preview** reloads only the active preview and keeps unsaved editor changes.
 - **Discard and refresh the theme editor** discards unsaved changes and restores Shopify's last saved editor state.
