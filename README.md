@@ -5,7 +5,9 @@ An unofficial, dependency-free userscript by **[CheckoutWorks](https://checkoutw
 - **Refresh storefront preview** reloads only the active preview and keeps unsaved editor changes.
 - **Discard and refresh the theme editor** discards unsaved changes and restores Shopify's last saved editor state.
 
-[Read the full guide on CheckoutWorks](https://checkoutworks.dev/blogs/shopify-field-notes/refresh-shopify-theme-editor-without-reloading-admin) · [Install Tampermonkey Userscript](https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/raw/main/shopify-theme-editor-refresh-controls.user.js)
+[Read the full guide on CheckoutWorks](https://checkoutworks.dev/blogs/shopify-field-notes/refresh-shopify-theme-editor-without-reloading-admin) 
+
+[Install Tampermonkey Userscript](https://github.com/CheckoutWorks/shopify-theme-editor-refresh-controls/raw/main/shopify-theme-editor-refresh-controls.user.js)
 
 ## Demo
 
